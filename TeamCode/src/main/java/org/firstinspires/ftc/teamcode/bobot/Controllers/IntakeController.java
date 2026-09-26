@@ -2,17 +2,18 @@ package org.firstinspires.ftc.teamcode.bobot.Controllers;
 
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
 import com.seattlesolvers.solverslib.hardware.motors.Motor;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 
 public class IntakeController {
     private Motor iMotor1, iMotor2;
-    private ServoEx armServo1, armServo2;
+    private ServoEx armServo;
 
     private double power;
     private double armPos;
     private final double upPos = 0;
-    private final double flowerPos = 0;
+    private final double flowerPos = 0.93;
 
     private armStates state;
 
@@ -21,14 +22,16 @@ public class IntakeController {
         iMotor2 = new Motor(hMap, "iMotor2");
         iMotor2.setInverted(true);
 
-        armServo1 = new ServoEx(hMap, "armServo1");
-        armServo2 = new ServoEx(hMap, "armServo2");
-        armServo2.setInverted(true);
+        armServo = new ServoEx(hMap, "armServo");
+//        armServo.setInverted(true);
+//        armServo.setPwm(new PwmControl.PwmRange(500, 5000));
 
         power = 0;
         armPos = upPos;
         state = armStates.up;
     }
+
+    public void initServo(){armServo.set(armPos);}
 
     public void setPower(double power){
         this.power = power;
@@ -58,8 +61,7 @@ public class IntakeController {
         iMotor1.set(power);
         iMotor2.set(power);
 
-        armServo1.set(armPos);
-        armServo2.set(armPos);
+        armServo.set(armPos);
     }
 
     public void debug(MultipleTelemetry telemetry){

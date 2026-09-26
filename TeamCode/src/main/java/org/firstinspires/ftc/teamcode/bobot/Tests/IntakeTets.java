@@ -14,14 +14,15 @@ import org.firstinspires.ftc.teamcode.bobot.Controllers.IntakeController;
 public class IntakeTets extends OpMode {
     IntakeController iController;
     public static double power, armPos;
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
     MultipleTelemetry multipleTelemetry;
 
     @Override
     public void init() {
         iController = new IntakeController(hardwareMap);
 
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        Telemetry dashboardTelemetry = dashboard.getTelemetry();
         multipleTelemetry = new MultipleTelemetry(telemetry, dashboardTelemetry);
     }
 
@@ -32,5 +33,6 @@ public class IntakeTets extends OpMode {
 
         iController.update();
         iController.debug(multipleTelemetry);
+        multipleTelemetry.update();
     }
 }

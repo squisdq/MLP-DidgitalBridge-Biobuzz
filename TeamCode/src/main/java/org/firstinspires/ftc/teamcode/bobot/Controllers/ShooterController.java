@@ -11,52 +11,66 @@ import org.firstinspires.ftc.teamcode.bobot.Utils.MLPLut;
 
 @Config
 public class ShooterController {
-    private final Motor sMotor;
-    private final ServoEx bServo, hServo;
-    private final PIDFController controller;
+    private final Motor sMotor, csMotor;
+    private final ServoEx bServo;
+    private final PIDFController controller, concontroller;
     private final MLPLut sLut, hLut;
 
-    public static double kP, kF;
+    public static double kP = 0.0017, kF = 0.00049;
+    public static double ckP = 0.0004, ckF = 0.000378;
 
-    private double cSpeed, tSpeed;
-    private double bPos, hPos;
+    private double cSpeed, ccSpeed, tSpeed, ctSpeed, aSpeed;
+    private double bPos = 0.6;
 
-    private final double fSpeed = 0.00;
-    private final double fPos = 0.00;
-    private final double blockPos = 0.00;
-    private final double openPos = 0.00;
+    private final double fSpeed = 737;
+    private final double blockPos = 0.34;
+    private final double openPos = 0.53;
+
+    public static double sK = 1.7;
 
     private double distance = 0.00;
 
     private bStates bState = bStates.block;
     private sModes sMode = sModes.lut;
+    private boolean sOn;
 
     public ShooterController(HardwareMap hMap){
         sMotor = new Motor(hMap, "sMotor");
+        sMotor.setInverted(true);
         bServo = new ServoEx(hMap, "bServo");
-        hServo = new ServoEx(hMap, "hServo");
+        bServo.setInverted(true);
+        csMotor = new Motor(hMap, "csMotor");
+        csMotor.setInverted(true);
 
         controller = new PIDFController(kP, 0, 0, kF);
+        concontroller = new PIDFController(ckP, 0, 0, ckF);
+
         sLut = MLPLut.builder()
-                .add(0, 0)
-                .add(0, 0)
-                .add(0, 0)
-                .allowExtrapolation(false)
+                .add(28, 675)
+                .add(55, 728)
+                .add(72, 890)
+                .allowExtrapolation(true)
                 .build();
 
         hLut = MLPLut.builder()
-                .add(0, 0)
-                .add(0, 0)
-                .add(0, 0)
-                .allowExtrapolation(false)
+                .add(30, 1.7)
+                .add(55, 1.7)
+                .add(72, 1.3)
+                .allowExtrapolation(true)
                 .build();
 
+        ccSpeed = 0;
         cSpeed = 0;
         tSpeed = 0;
+        ctSpeed = 0;
+        aSpeed = 0;
 
         bPos = blockPos;
-        hPos =  0;
+
+        sOn = false;
     }
+
+    public double getCSpeed(){return cSpeed;}
 
     public void setDistance(double distance){
         this.distance = distance;
@@ -78,6 +92,17 @@ public class ShooterController {
         setSMode(sModes.fixed);
     }
 
+    public sModes getsMode(){return  sMode;}
+
+    public void addSpeed(boolean direction){
+        if(direction)
+            aSpeed += 20;
+        else
+            aSpeed -= 20;
+    }
+
+    public double getTSpeed(){return tSpeed;}
+
     public void switchSMode(){
         if(sMode != sModes.lut) {
             setLut();
@@ -85,9 +110,6 @@ public class ShooterController {
             setFixed();
     }
 
-    public void setHPos(double hPos){
-        this.hPos = hPos;
-    }
 
     public void setBPos(double bPos){
         this.bPos = bPos;
@@ -102,6 +124,10 @@ public class ShooterController {
             setBPos(openPos);
     }
 
+    public void setsOn(boolean sOn) {
+        this.sOn = sOn;
+    }
+
     public void setSpeed(double tSpeed){
         this.tSpeed = tSpeed;
     }
@@ -111,24 +137,36 @@ public class ShooterController {
     }
 
     public void update(){
+        ctSpeed = tSpeed* sK;
+
         cSpeed = sMotor.getCorrectedVelocity();
+        ccSpeed = csMotor.getCorrectedVelocity();
         if(sMode == sModes.lut){
             setSpeed(sLut.get(distance));
-            setHPos(hLut.get(distance));
+            sK = hLut.get(distance);
         } else if(sMode == sModes.fixed){
             setSpeed(fSpeed);
-            setHPos(fPos);
+            sK = 1.7;
         } else if(sMode == sModes.manual){
             setSpeed(tSpeed);
-            setHPos(hPos);
+            sK = sK;
         }
 
         controller.setPIDF(kP, 0, 0, kF);
-        double power = controller.calculate(cSpeed, tSpeed);
-        sMotor.set(power);
-
+        concontroller.setPIDF(ckP, 0, 0, ckF);
+        double power = controller.calculate(cSpeed, tSpeed + aSpeed);
+        double cPower = concontroller.calculate(ccSpeed, tSpeed*sK + aSpeed*sK);
+        if(tSpeed == 0 || !sOn) {
+            aSpeed = 0;
+            sMotor.set(0);
+            csMotor.set(0);
+            tSpeed = 0;
+        } else {
+            sMotor.set(power);
+            csMotor.set(cPower);
+            sOn = true;
+        }
         bServo.set(bPos);
-        hServo.set(hPos);
     }
 
     public void debug(MultipleTelemetry telemetry){
@@ -136,10 +174,14 @@ public class ShooterController {
         telemetry.addData("SC: atTarget: ", atTarget());
         telemetry.addData("SC: cSpeed: ", cSpeed);
         telemetry.addData("SC: tSpeed: ", tSpeed);
+        telemetry.addData("SC: ccSpeed: ", ccSpeed);
+        telemetry.addData("SC: ctSpeed: ", ctSpeed);
+        telemetry.addData("SC: aSpeed: ", aSpeed);
         telemetry.addData("SC: sMode: ", sMode);
         telemetry.addData("SC: bPos: ", bPos);
-        telemetry.addData("SC: hPos: ", hPos);
         telemetry.addData("SC: bState: ", bState);
+        telemetry.addData("SC: sk: ", sK);
+
     }
 
     public enum bStates{

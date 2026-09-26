@@ -14,26 +14,30 @@ import org.firstinspires.ftc.teamcode.bobot.Controllers.ShooterController;
 public class ShooterTest extends OpMode {
     ShooterController sController;
     public static double tSpeed = 0;
-    public static double hPos = 0.00 , bPos = 0.00;
+    public double cSpeed;
+    public static double bPos = 0.50;
     MultipleTelemetry multipleTelemetry;
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     @Override
     public void init() {
         sController = new ShooterController(hardwareMap);
         sController.setManual();
+        sController.setsOn(true);
 
-        FtcDashboard dashboard = FtcDashboard.getInstance();
-        Telemetry dashboardTelemetry = dashboard.getTelemetry();
         multipleTelemetry = new MultipleTelemetry(telemetry, dashboardTelemetry);
     }
 
     @Override
     public void loop() {
         sController.setSpeed(tSpeed);
-        sController.setHPos(hPos);
         sController.setBPos(bPos);
+        cSpeed = sController.getCSpeed();
 
         sController.update();
         sController.debug(multipleTelemetry);
+        multipleTelemetry.update();
     }
 }
