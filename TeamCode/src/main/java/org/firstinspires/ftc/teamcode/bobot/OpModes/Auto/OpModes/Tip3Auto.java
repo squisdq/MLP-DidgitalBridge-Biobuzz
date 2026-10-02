@@ -32,7 +32,7 @@ public class Tip3Auto extends LinearOpMode {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(54.1887, 6.5, 0);
+    private final Pose start = poseFactory.of(54.1196, 6.5897, 90);
     private final Pose intakeCurveFlower1 = poseFactory.of(93.8891, 12.047, 270);
     private final Pose intakeCurveFlower1Control1 = poseFactory.of(52.4752, 39.0199, 0);
     private final Pose intakeCurveFlower1Control2 = poseFactory.of(92.1192, 36.6639, 0);
@@ -40,7 +40,7 @@ public class Tip3Auto extends LinearOpMode {
     private final Pose transitControl1 = poseFactory.of(57.0762, 64.6788, 0);
     private final Pose transitControl2 = poseFactory.of(91, 62, 0);
     private final Pose toShootFlower1 = poseFactory.of(60.0886, 117.6792, 0);
-    private final Pose intakeFlower2 = poseFactory.of(50.245, 128.303, 90);
+    private final Pose intakeFlower2 = poseFactory.of(46.245, 126.303, 90);
     private final Pose shootFlower2 = poseFactory.of(58.6225, 113.9934, 0);
     private final Pose toIntakeFlower3 = poseFactory.of(23.9412, 44.4259, 180);
     private final Pose toIntakeFlower3Control1 = poseFactory.of(15.1871, 92.4272, 0);
@@ -50,7 +50,7 @@ public class Tip3Auto extends LinearOpMode {
     private final Pose intakeRow = poseFactory.of(9.0828, 5.4603, 172.8511);
     private final Pose intakeRowControl1 = poseFactory.of(32.4189, 2.4255, 0);
     private final Pose toPark = poseFactory.of(10.4321, 95.9652, 90);
-    private final Pose toParkControl1 = poseFactory.of(30.8444, 68, 0);
+//    private final Pose toParkControl1 = poseFactory.of(30.8444, 68, 0);
 
     private final double sT = 1700, iT = 1400;
     private Command intakeOn()  { return instant(masterController::intake); }

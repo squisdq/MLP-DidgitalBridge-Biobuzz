@@ -15,6 +15,14 @@ import org.firstinspires.ftc.teamcode.bobot.Utils.MLPConfig;
 
 @Config
 public class MasterController {
+
+//    Uber Black до КМа
+//    В моём носу только первый, я
+//    Дал на клык этой стерве эй
+//    Она хочет быть с первым
+//    Я первый, первый, первый я
+//    Первый, первый, первый я я я
+
     private ShooterController sController;
     private TurretController tController;
     private IntakeController iController;

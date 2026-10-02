@@ -50,7 +50,6 @@ public class MLPLut {
             }
         }
 
-        // теоретически недостижимо, но fallback вместо исключения
         return yData.get(n - 1);
     }
 
