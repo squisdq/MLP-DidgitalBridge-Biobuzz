@@ -59,10 +59,10 @@ public class XCLNC extends LinearOpMode {
                 shooterOn(true),
                 waitUntil(masterController::atTarget),
                 race(
-                        infinite(masterController::shoot),   // вызывается каждый цикл
-                        waitMs(ms)                 // время стрельбы
+                        infinite(masterController::shoot),
+                        waitMs(ms)
                 ),
-                instant(masterController::stopIntake),   // сброс флагов, блокиратор закрыт, интейк 0
+                instant(masterController::stopIntake),
                 shooterOn(false)
         );
     }

@@ -32,7 +32,6 @@ public class ParkAuto extends LinearOpMode {
         return instant(this::requestOpModeStop);
     }
 
-    // Autonomous routine
     public Command autoRoutine() {
         return sequential(
                 follow(follower, path1()),

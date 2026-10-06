@@ -64,10 +64,10 @@ public class Tip3Auto extends LinearOpMode {
                 shooterOn(true),
                 waitUntil(masterController::atTarget),
                 race(
-                        infinite(masterController::shoot),   // вызывается каждый цикл
-                        waitMs(ms)                 // время стрельбы
+                        infinite(masterController::shoot),
+                        waitMs(ms)
                 ),
-                instant(masterController::stopIntake),   // сброс флагов, блокиратор закрыт, интейк 0
+                instant(masterController::stopIntake),
                 shooterOn(false)
         );
     }
@@ -80,7 +80,6 @@ public class Tip3Auto extends LinearOpMode {
         return instant(this::requestOpModeStop);
     }
 
-    // Autonomous routine
     public Command autoRoutine() {
         return sequential(
                 setArm(flower),
@@ -115,7 +114,7 @@ public class Tip3Auto extends LinearOpMode {
                 stopOpMode()
         );
     }
-//ramazan daun
+
     @Override
     public void runOpMode() {
         Scheduler.reset();
