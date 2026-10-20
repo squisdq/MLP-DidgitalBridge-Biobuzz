@@ -16,15 +16,15 @@ public class ShooterController {
     private final PIDFController controller, concontroller;
     private final MLPLut sLut, hLut;
 
-    public static double kP = 0.0017, kF = 0.00049;
-    public static double ckP = 0.0004, ckF = 0.000378;
+    public static double kP = 0.0017, kF = 0.000434;
+    public static double ckP = 0.0005, ckF = 0.000385;
 
     private double cSpeed, ccSpeed, tSpeed, ctSpeed, aSpeed;
     private double bPos = 0.6;
 
     private final double fSpeed = 737;
-    private final double blockPos = 0.34;
-    private final double openPos = 0.53;
+    private final double blockPos = 0.45;
+    private final double openPos = 0.63;
 
     public static double sK = 1.7;
 
@@ -109,7 +109,6 @@ public class ShooterController {
         } else
             setFixed();
     }
-
 
     public void setBPos(double bPos){
         this.bPos = bPos;

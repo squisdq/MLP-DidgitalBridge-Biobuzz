@@ -24,7 +24,7 @@ public class IntakeController {
 
         armServo = new ServoEx(hMap, "armServo");
 //        armServo.setInverted(true);
-//        armServo.setPwm(new PwmControl.PwmRange(500, 5000));
+        armServo.setPwm(new PwmControl.PwmRange(500, 2500));
 
         power = 0;
         armPos = upPos;
@@ -61,7 +61,7 @@ public class IntakeController {
         iMotor1.set(power);
         iMotor2.set(power);
 
-        armServo.set(armPos);
+//        armServo.set(armPos);
     }
 
     public void debug(MultipleTelemetry telemetry){

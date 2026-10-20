@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.bobot.Controllers.MasterController;
@@ -45,7 +46,6 @@ public class DuoOp extends OpMode {
             masterController.stopIntake();
         if(gamepad2.rightBumperWasPressed())
             masterController.toggleShooter();
-
         if(gamepad1.startWasPressed())
             masterController.resetPositionRight();
         if(gamepad1.backWasPressed())

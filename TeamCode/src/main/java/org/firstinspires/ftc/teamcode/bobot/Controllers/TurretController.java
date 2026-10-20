@@ -24,7 +24,7 @@ public class TurretController {
     }
 
     public void setAngle(double tAngle){
-        tAngle = AngleUnit.normalizeDegrees(tAngle);
+        tAngle = AngleUnit.normalizeDegrees(tAngle - 180);
 
         if(tAngle > 140)
             tAngle = 140;

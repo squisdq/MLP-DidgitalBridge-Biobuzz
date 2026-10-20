@@ -29,8 +29,8 @@ public class MasterController {
 
     private final ElapsedTime shootTimer = new ElapsedTime();
     private boolean waitingToShoot = false;
-    private static final double SHOOT_DELAY_MS = 180;
-    public static double sPower = 0.4;
+    private static final double SHOOT_DELAY_MS = 100;
+    public static double sPower = 0.55 ;
     private double smk;
 
     public static double aK= 0;
